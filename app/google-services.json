@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "821672325637",
+    "project_id": "shinyuu-chat-7c094",
+    "storage_bucket": "shinyuu-chat-7c094.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:821672325637:android:2415ce3a25f2c0afb7626c",
+        "android_client_info": {
+          "package_name": "com.xero.shinyuuchat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDgMNJKKKSPWDh1thGDFctPvw8CjV2GVZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
