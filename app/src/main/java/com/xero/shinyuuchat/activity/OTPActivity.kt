@@ -12,6 +12,8 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.xero.shinyuuchat.databinding.ActivityOtpactivityBinding
 import java.util.concurrent.TimeUnit
+import com.xero.shinyuuchat.activity.ProfileActivity
+
 
 class OTPActivity : AppCompatActivity() {
 
@@ -77,7 +79,7 @@ class OTPActivity : AppCompatActivity() {
                 auth.signInWithCredential(credential)
                     .addOnCompleteListener {
                         if ( it.isSuccessful ){
-                            startActivity(Intent(this,ProfileActivity::class.java))
+                            startActivity(Intent(this@OTPActivity, ProfileActivity::class.java))
                             finish()
                         }else{
                             dialog.dismiss()
