@@ -3,11 +3,9 @@ package com.xero.shinyuuchat.activity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.xero.shinyuuchat.adapter.MsgAdapter
 import com.xero.shinyuuchat.databinding.ActivityChatBinding
 import com.xero.shinyuuchat.model.MsgModel
@@ -21,7 +19,8 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var receiverUid: String
     private lateinit var senderRoom: String
     private lateinit var receiverRoom: String
-    private lateinit var list: ArrayList<MsgModel>
+    private lateinit var msgAdapter: MsgAdapter
+    private val messageList = ArrayList<MsgModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,61 +38,60 @@ class ChatActivity : AppCompatActivity() {
         senderRoom = "$senderUid$receiverUid"
         receiverRoom = "$receiverUid$senderUid"
 
-        list = ArrayList()
+        // Set up RecyclerView
+        msgAdapter = MsgAdapter(this, messageList)
+        binding.RecyclerView.apply {
+            layoutManager = LinearLayoutManager(this@ChatActivity)
+            adapter = msgAdapter
+        }
 
         // Set click listener for send button
         binding.sendTextBtn.setOnClickListener {
-            if (binding.messageBox.text.isEmpty()) {
+            val messageText = binding.messageBox.text.toString().trim()
+            if (messageText.isEmpty()) {
                 Toast.makeText(this, "Empty Message", Toast.LENGTH_SHORT).show()
             } else {
-                val message = MsgModel(binding.messageBox.text.toString(), senderUid, Date().time)
-                val randomKey = database.reference.push().key
-                if (randomKey != null) {
-                    // Send message to sender room
-                    database.reference.child("chats").child(senderRoom).child("message").child(randomKey)
-                        .setValue(message)
-                        .addOnSuccessListener {
-                            // Send message to receiver room
-                            database.reference.child("chats").child(receiverRoom).child("message").child(randomKey)
-                                .setValue(message)
-                                .addOnSuccessListener {
-                                    // Clear message box after sending message
-                                    binding.messageBox.text = null
-                                    Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show()
-                                }
-                                .addOnFailureListener { e ->
-                                    // Handle failure to send message to receiver room
-                                    Toast.makeText(this, "Failed to send message to receiver: ${e.message}", Toast.LENGTH_SHORT).show()
-                                }
-                        }
-                        .addOnFailureListener { e ->
-                            // Handle failure to send message to sender room
-                            Toast.makeText(this, "Failed to send message: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                } else {
-                    // Handle case where randomKey is null
-                    Toast.makeText(this, "Failed to generate random key", Toast.LENGTH_SHORT).show()
-                }
+                sendMessage(messageText)
             }
         }
 
+        // Listen for changes in chat messages
         database.reference.child("chats").child(senderRoom).child("message")
-            .addValueEventListener(object : ValueEventListener{
+            .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    list.clear()
-
-                    for (snapshot1 in snapshot.children){
-                        val data = snapshot1.getValue(MsgModel::class.java)
-                        list.add(data!!)
+                    messageList.clear()
+                    for (messageSnapshot in snapshot.children) {
+                        val message = messageSnapshot.getValue(MsgModel::class.java)
+                        message?.let { messageList.add(it) }
                     }
-
-                    binding.RecyclerView.adapter = MsgAdapter(this@ChatActivity, list)
+                    msgAdapter.notifyDataSetChanged()
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(this@ChatActivity, "Error : $error", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ChatActivity, "Error: $error", Toast.LENGTH_SHORT).show()
                 }
             })
+    }
 
+    private fun sendMessage(messageText: String) {
+        val message = MsgModel(messageText, senderUid, Date().time)
+        val randomKey = database.reference.push().key
+        randomKey?.let { key ->
+            val messageRef = database.reference.child("chats")
+            val messageMap = HashMap<String, Any>()
+            messageMap["$senderRoom/message/$key"] = message
+            messageMap["$receiverRoom/message/$key"] = message
+            messageRef.updateChildren(messageMap)
+                .addOnSuccessListener {
+                    binding.messageBox.text.clear()
+                    Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener { e ->
+                    Toast.makeText(this, "Failed to send message: ${e.message}", Toast.LENGTH_SHORT).show()
+                }
+        } ?: run {
+            Toast.makeText(this, "Failed to generate random key", Toast.LENGTH_SHORT).show()
+        }
     }
 }
+
