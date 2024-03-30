@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.xero.shinyuuchat.adapter.MsgAdapter
@@ -22,6 +23,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var receiverRoom: String
     private lateinit var msgAdapter: MsgAdapter
     private val messageList = ArrayList<MsgModel>()
+
+    private lateinit var receiverName: String
+    private lateinit var receiverProfilePic: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,26 @@ class ChatActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(this@ChatActivity)
             adapter = msgAdapter
         }
+
+        //to get receivers name and profile pic
+        val receiverRef = database.reference.child("users").child(receiverUid)
+        receiverRef.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()){
+                    receiverName = snapshot.child("name").getValue(String::class.java) ?: ""
+                    receiverProfilePic = snapshot.child("imageUrl").getValue(String::class.java) ?: ""
+                    //set receivers name
+                    binding.receiverNameTv.text = receiverName
+                    //load receiver dp
+                    Glide.with(this@ChatActivity).load(receiverProfilePic).into(binding.receiverDp)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
 
         // Set click listener for send button
         binding.sendTextBtn.setOnClickListener {

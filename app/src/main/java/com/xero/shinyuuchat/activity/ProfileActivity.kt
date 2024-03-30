@@ -3,10 +3,12 @@ package com.xero.shinyuuchat.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
@@ -35,6 +37,10 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Initialize binding
+        binding = ActivityProfileBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         // Check if the user already has a profile
         checkUserProfile()
     }
@@ -46,12 +52,24 @@ class ProfileActivity : AppCompatActivity() {
             userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                        // User profile exists, navigate to MainActivity
-                        startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
-                        finish()
+                        // User profile exists, display skipEdit button
+                        binding.skipEdit.visibility = View.VISIBLE
+
+                        binding.skipEdit.setOnClickListener {
+                            startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+                        }
+
+                        // Retrieve old name and profile pic URL
+                        val user = snapshot.getValue(UserModel::class.java)
+                        user?.let {
+                            // Display old name in the EditText
+                            binding.usernameInput.setText(user.name)
+
+                            // Load old profile pic
+                            Glide.with(this@ProfileActivity).load(user.imageUrl).into(binding.profilePic)
+                        }
                     } else {
                         // User profile does not exist, proceed with profile update
-                        setContentView(ActivityProfileBinding.inflate(layoutInflater).root)
                         initializeUI()
                     }
                 }
@@ -65,8 +83,6 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun initializeUI() {
-        binding = ActivityProfileBinding.inflate(layoutInflater)
-
         auth = FirebaseAuth.getInstance()
         database = FirebaseDatabase.getInstance()
         storage = FirebaseStorage.getInstance()
@@ -103,6 +119,7 @@ class ProfileActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     reference.downloadUrl.addOnSuccessListener { uri ->
                         uploadInfo(uri.toString())
+                        startActivity(Intent(this, MainActivity::class.java))
                     }
                 } else {
                     Toast.makeText(this, "Upload failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
@@ -123,6 +140,7 @@ class ProfileActivity : AppCompatActivity() {
             .setValue(user)
             .addOnSuccessListener {
                 Toast.makeText(this, "User Created Successfully", Toast.LENGTH_SHORT).show()
+                // Navigate to MainActivity only after user creation is successful
                 startActivity(Intent(this, MainActivity::class.java))
                 finish()
             }

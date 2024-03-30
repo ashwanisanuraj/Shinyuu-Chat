@@ -52,8 +52,21 @@
         android:text="Continue"
         android:id="@+id/continueFromProfleBtn"
         android:layout_marginTop="18dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:textSize="20sp"
         />
+
+    <Button
+        android:id="@+id/skipEdit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+android:visibility="gone"
+        android:backgroundTint="#FF0000"
+        android:text="Skip" />
 
 
 </LinearLayout>

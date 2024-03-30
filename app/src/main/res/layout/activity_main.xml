@@ -11,23 +11,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:layout_height="30dp">
+        android:background="#128C7E"
+        android:layout_height="45dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Welconme to Shinyuu Chat"
+            android:text="Shinyuu Chat"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit Profile"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
             android:id="@+id/editProfileBtn"
             />
@@ -38,7 +39,7 @@
             android:text="LOGOUT"
             android:id="@+id/logout"
             android:textColor="#FF0000"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:layout_marginStart="12dp"
             />
 
@@ -47,6 +48,9 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
+        android:background="#128C7E"
+        app:tabIndicatorColor="@color/black"
+        app:tabTextColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
