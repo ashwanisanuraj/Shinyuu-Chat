@@ -28,7 +28,6 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        window.statusBarColor= Color.TRANSPARENT
 
         // Initialize Firebase
         database = FirebaseDatabase.getInstance()
