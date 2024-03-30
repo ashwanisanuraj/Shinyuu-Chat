@@ -1,6 +1,7 @@
 package com.xero.shinyuuchat
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -24,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        window.statusBarColor= Color.TRANSPARENT
 
         val fragmentArrayList = ArrayList<Fragment>()
         fragmentArrayList.add(ChatFragment())

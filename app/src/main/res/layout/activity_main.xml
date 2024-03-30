@@ -16,10 +16,15 @@
             android:layout_height="wrap_content"
             android:minHeight="?actionBarSize"
             android:padding="16sp"
+            android:gravity="center"
             android:text="Shinyuu Chat"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp">
+
+
+        </TextView>
+       
+
 
        <com.google.android.material.tabs.TabLayout
            android:layout_width="match_parent"

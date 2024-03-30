@@ -11,6 +11,7 @@
         android:background="@drawable/sent_drawable"
         android:padding="8dp"
         android:text="Hello,"
+        android:layout_marginTop="8dp"
         android:textSize="16sp"
         android:id="@+id/senChat"
         app:layout_constraintEnd_toEndOf="parent"

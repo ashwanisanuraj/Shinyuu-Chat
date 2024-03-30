@@ -1,5 +1,6 @@
 package com.xero.shinyuuchat.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,8 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        window.statusBarColor= Color.TRANSPARENT
 
         // Initialize Firebase
         database = FirebaseDatabase.getInstance()
