@@ -53,18 +53,16 @@ class ProfileActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         // User profile exists
-                        startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
-
-                        /*
-                        // Retrieve old name and profile pic URL
                         val user = snapshot.getValue(UserModel::class.java)
                         user?.let {
                             // Display old name in the EditText
                             binding.usernameInput.setText(user.name)
                             // Load old profile pic
                             Glide.with(this@ProfileActivity).load(user.imageUrl).into(binding.profilePic)
+                            // Proceed to MainActivity
+                            startActivity(Intent(this@ProfileActivity, MainActivity::class.java))
+                            finish()
                         }
-                         */
                     } else {
                         // User profile does not exist, proceed with profile update
                         initializeUI()
