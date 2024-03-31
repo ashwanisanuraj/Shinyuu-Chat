@@ -15,33 +15,29 @@
         android:layout_height="45dp">
 
         <TextView
+            android:id="@+id/developer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Shinyuu Chat"
-            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="12dp"
+            android:gravity="start"
+            android:layout_weight="1"
+            />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/userProfilePic"
+            android:layout_width="25dp"
+            android:layout_height="45dp"
+            android:src="@drawable/dp"
+            android:layout_weight="1"
+            android:layout_gravity="end"
             android:layout_marginTop="12dp"
             />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit Profile"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="12dp"
-            android:id="@+id/editProfileBtn"
-            />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="LOGOUT"
-            android:id="@+id/logout"
-            android:textColor="#FF0000"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="12dp"
-            />
 
     </LinearLayout>
 

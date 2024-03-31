@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/colorPrimaryDark"
+    tools:context=".activity.DeveloperActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Hi,"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Shinyuu Chat"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_marginStart="8dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/black"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:text="If you find any bugs or have any suggestion please email me on"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ashwanisanuraj@gmail.com"
+        android:textSize="18sp"
+        android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        />
+
+</LinearLayout>
